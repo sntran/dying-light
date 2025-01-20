@@ -1,0 +1,749 @@
+{
+    "daytime": {
+        "daysElapsed": 1,
+        "timeOfDay": 0.719718873500824
+    },
+    "player": {
+        "buffs": [],
+        "fury": 0.0,
+        "health": 100.0,
+        "inventory": {
+            "ammo": {
+                "items": []
+            },
+            "cash": 0,
+            "equipmentSlots": [
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 675
+                    },
+                    "condition": 1.0,
+                    "craftPlan": "None",
+                    "id": 2669,
+                    "name": "zzzzz_Throwable_ShurikenAGenBlue",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                }
+            ],
+            "items1": [
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "green",
+                        "unknown1": 1,
+                        "unknown2": 718
+                    },
+                    "condition": 44.0,
+                    "craftPlan": "None",
+                    "id": 1113,
+                    "name": "ZZ2Patch_Melee_MacheteAPhosphor",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": [
+                        "None"
+                    ]
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "platinum",
+                        "unknown1": 1,
+                        "unknown2": 881
+                    },
+                    "condition": 70.0,
+                    "craftPlan": "None",
+                    "id": 525,
+                    "name": "Melee_BaseballBatCGen",
+                    "quantity": -1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": [
+                        "None",
+                        "None",
+                        "None"
+                    ]
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "blue",
+                        "unknown1": 1,
+                        "unknown2": 838
+                    },
+                    "condition": 7.75,
+                    "craftPlan": "None",
+                    "id": 973,
+                    "name": "Melee_WrenchAGen",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": [
+                        "None",
+                        "None"
+                    ]
+                }
+            ],
+            "items2": [],
+            "items3": [
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 751
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 273,
+                    "name": "Craft_DuctTape",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 833
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 286,
+                    "name": "Craft_PowerCable",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 19
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 283,
+                    "name": "Craft_Nails",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 138
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 274,
+                    "name": "Craft_Electronics",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 657
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 289,
+                    "name": "Craft_RazorBlade",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 673
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 270,
+                    "name": "Craft_Batteries",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 673
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 269,
+                    "name": "Craft_Alcohol",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 284
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 285,
+                    "name": "Craft_PlasticTube",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 967
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 291,
+                    "name": "Craft_String",
+                    "quantity": 16,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 510
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 271,
+                    "name": "Craft_Bleach",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 687
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 278,
+                    "name": "Craft_Insecticide",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 735
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 290,
+                    "name": "Craft_Shroom",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 630
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 292,
+                    "name": "Craft_Sugar",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 831
+                    },
+                    "condition": -1.0499999523162842,
+                    "craftPlan": "None",
+                    "id": 313,
+                    "name": "Craft_Upgrade_DurBal",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 603
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 295,
+                    "name": "Craft_ToxicPlant",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 928
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 460,
+                    "name": "LockpickItem",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 249
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 282,
+                    "name": "Craft_MetalScrap",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 544
+                    },
+                    "condition": -1.0499999523162842,
+                    "craftPlan": "None",
+                    "id": 304,
+                    "name": "Craft_Upgrade_DamDurBal",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 914
+                    },
+                    "condition": -1.0499999523162842,
+                    "craftPlan": "None",
+                    "id": 303,
+                    "name": "Craft_Upgrade_DamDur",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 34
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 298,
+                    "name": "Craft_Upgrade_BalL2",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "green",
+                        "unknown1": 8,
+                        "unknown2": 751
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 294,
+                    "name": "Craft_TinCan",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 503
+                    },
+                    "condition": -1.100000023841858,
+                    "craftPlan": "None",
+                    "id": 314,
+                    "name": "Craft_Upgrade_DurL2",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "green",
+                        "unknown1": 8,
+                        "unknown2": 751
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 275,
+                    "name": "Craft_Gauze",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 968
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 1003,
+                    "name": "misc_pouch",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 923
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 997,
+                    "name": "misc_cigarettes",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 820
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 1002,
+                    "name": "misc_jewels",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 183
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 999,
+                    "name": "misc_cosmetics",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                },
+                {
+                    "ammoId": -1,
+                    "attributes": {
+                        "color": "white",
+                        "unknown1": 0,
+                        "unknown2": 262
+                    },
+                    "condition": -1.0,
+                    "craftPlan": "None",
+                    "id": 463,
+                    "name": "Medkit_HealthPackLarge",
+                    "quantity": 1,
+                    "repairs": 0,
+                    "unknown": {
+                        "unknown002": 0,
+                        "unknown004": 0,
+                        "unknown006": false,
+                        "unknown007": false,
+                        "unknown008": -1
+                    },
+                    "upgradeSockets": []
+                }
+            ],
+            "quickSlots": []
+        },
+        "skills": [],
+        "storage": {
+            "ammo": {
+                "items": []
+            },
+            "cash": 0,
+            "items1": [],
+            "items2": [],
+            "items3": []
+        },
+        "timedBuffs": []
+    }
+}

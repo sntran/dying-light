@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" class="text-[20px]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dying Light Editor</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700,800" rel="stylesheet" type="text/css">
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.0.0-beta.9/+esm"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --font-sans: "Dosis", ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+      'Segoe UI Symbol', 'Noto Color Emoji';
+      --color-grey: #949494;
+      --color-orange: #e0931f;
+      --color-red: #bd531d;
+      --color-platinum: gold;
+
+      --container-width: 1440px;
+    }
+
+    @layer base {
+      h2 {
+        @apply px-4 py-2 font-bold text-xl uppercase text-yellow-600;
+      }
+
+      button {
+        @apply cursor-pointer;
+        text-transform: inherit;
+      }
+
+      kbd {
+        @apply font-mono leading-none py-px px-1 rounded border;
+      }
+    }
+
+    @layer components {
+      menu {
+        & li {
+          @apply font-bold text-5xl uppercase;
+          @apply flex gap-1 items-center;
+          @apply relative pb-1;
+          @apply text-white;
+          @apply transition-all duration-500;
+          text-shadow: 1px 1px 1px #000;
+
+          &:before {
+            content: "";
+            @apply absolute w-full top-[5%] bottom-[5%] left-0;
+            @apply border-[#c96800] border-t-2 border-b-2;
+            @apply opacity-0;
+            @apply transition-all duration-500;
+          }
+
+          @apply *:relative;
+
+          &:after {
+            content: "›";
+            @apply text-5xl text-transparent;
+            @apply opacity-0 -translate-x-full;
+            @apply transition-all duration-500;
+          }
+
+          &:hover, &:focus-within {
+            @apply bg-orange text-[#482800];
+            @apply px-[20px];
+
+            &:before {
+              @apply opacity-100;
+            }
+
+            &:after {
+              @apply opacity-100 translate-x-0 text-white;
+            }
+          }
+        }
+      }
+
+      .item {
+
+      }
+
+      .item__title {
+        @apply flex gap-2 select-none;
+
+        &:before {
+          content: "";
+          @apply p-2 box-content size-[1em];
+          @apply font-mono leading-none text-2xl text-center;
+          @apply text-white;
+        }
+
+        & strong {
+          @apply flex-1;
+          @apply flex items-center;
+          @apply uppercase;
+        }
+
+        &:after {
+          content: "";
+          @apply p-2 box-content size-[1em];
+          @apply leading-none text-2xl text-center;
+        }
+      }
+
+      .item__stat {
+        @apply flex gap-1 items-center select-none;
+        @apply uppercase;
+        @apply bg-black/20;
+
+        &:before {
+          content: "⚙";
+          @apply p-1 box-content size-[1em];
+          @apply font-mono leading-none text-2xl text-center;
+          @apply text-grey;
+        }
+
+        & span {
+          @apply flex-1;
+        }
+
+        & input {
+          @apply max-w-[5ch] text-right;
+
+          .col-span-full & {
+            @apply max-w-none;
+          }
+        }
+      }
+    }
+
+    @utility container {
+      /*
+      Tailwind 4.0.0.alpha-33+ added a fallback for v3 `container`,
+      which set max-width on various breakpoints.
+      We need to reset the max-width, but in a separate `@utility` call.
+      */
+      @media (width >= 0) {
+        @apply max-w-none w-auto;
+      }
+    }
+
+    @utility container {
+      display: grid;
+      grid-template-columns:
+        [full-start] minmax(var(--container-gutter, 1rem), 1fr)
+        [main-start] minmax(0, var(--container-width)) [main-end]
+        minmax(var(--container-gutter, 1rem), 1fr) [full-end];
+
+      :where(& > *) {
+        grid-column: main;
+      }
+
+      :where(& > .col-span-full) {
+        grid-column: full-start / full-end;
+      }
+    }
+
+    @utility tilt {
+      transform: translateX(150px) translateY(150px) rotateY(20deg) rotateZ(-2deg) rotateX(-15deg);
+    }
+
+    @utility scrollbar-thin {
+      scrollbar-width: thin;
+    }
+
+    @utility scrollbar-* {
+      scrollbar-color: --value(--color-*) transparent;
+    }
+
+    /**
+     * v4 changed hover variant to only apply when the primary input device supports hover.
+     * This breaks logic that depends on hover on tap, like primary nav on mobile.
+     * To fix it, we override the `hover` variant.
+     * @see https://tailwindcss.com/docs/v4-beta#hover-styles-ignored-on-mobile
+    */
+    @variant hover (&:hover);
+
+    @variant dialog-open (&:is(dialog[open]));
+    @variant details-open (&:is(details[open]));
+  </style>
+</head>
+<body
+  class="
+    container items-center h-screen overflow-clip
+    text-grey
+    group/body
+    has-dialog-open:blur
+  "
+>
+
+  <header class="row-start-1 col-span-full container">
+    <h1
+      class="
+        justify-self-end
+        font-bold text-7xl tracking-tighter
+        uppercase text-black
+      "
+    >
+      <span>Dying</span>
+      <span class="inline-block translate-y-1/2">Light</span>
+
+      <em
+        class="
+          block
+          font-semibold text-base tracking-tight
+          not-italic text-red
+        "
+      >Good Night Good Luck</em>
+    </h1>
+  </header>
+
+  <div
+    class="
+      row-start-2 col-span-full
+      self-end
+    "
+  >
+    <img src="/assets/484105.webp" class="w-full" />
+  </div>
+
+  <main
+    class="
+      row-start-2
+      relative perspective-midrange
+    "
+  >
+    <nav
+      class="
+        tilt
+        inline-flex
+        before:block before:w-[30px] before:h-full
+      "
+    >
+      <h2
+        class="
+          font-bold text-3xl text-white
+          bg-black/80
+          bg-linear-to-b from-black/80 via-[#171717]/80 via-50% to-black/80
+          [writing-mode:vertical-rl]
+        "
+      >Main Menu</h2>
+      <menu hx-ext="client-side-templates" class="ml-4">
+        <li>
+          <button
+            hx-get="/sample/save_coop_1.json"
+            hx-target="#player"
+            hx-swap="outerHTML transition:true"
+            handlebars-template="player-layout"
+            hx-on::after-request="if(event.detail.successful) modal.showModal()"
+            class="outline-none"
+          >New Game</button>
+        </li>
+      </menu>
+    </nav>
+  </main>
+
+  <dialog
+    id="modal" popover=""
+    class="
+      row-start-2
+      self-center
+      container not-open:hidden
+      mx-auto min-h-1/2
+      bg-transparent
+      backdrop:bg-black/90
+    "
+  >
+    <form
+      method="dialog"
+      class="
+        h-full flex flex-col
+        text-grey
+      "
+    >
+      <nav class="self-start flex font-extrabold leading-none text-3xl bg-black/10">
+        <button class="p-4 text-xl font-normal uppercase">
+          <kbd>Q</kbd>
+        </button>
+        <ul role="tablist" class="flex">
+          <li role="presentation" class="">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="Storage"
+              class="
+                p-4 uppercase
+                border-y-4 border-transparent
+                aria-selected:text-yellow-600
+                aria-selected:border-current
+              "
+            >Storage</button>
+          </li>
+          <li role="presentation" class="">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="Shop"
+              class="
+                p-4 uppercase
+                border-y-4 border-transparent
+                aria-selected:text-yellow-600
+                aria-selected:border-current
+              "
+            >Shop</button>
+          </li>
+        </ul>
+        <button class="p-4 text-xl font-normal uppercase">
+          <kbd>E</kbd>
+        </button>
+      </nav>
+
+      <textarea
+        name="json"
+        id="player"
+        rows="10"
+        class="flex-1 px-3 py-2 font-mono border"
+      ></textarea>
+
+      <div class="py-4 flex gap-4 uppercase">
+        <button type="submit"><kbd class="px-2">↵</kbd> Save</button>
+        <button type="submit"><kbd class="px-2">x</kbd> Drop</button>
+        <button type="cancel" class="ml-auto"><kbd>Esc</kbd> Back</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer
+    class="
+      row-start-3 col-span-full
+      h-full bg-black
+    "
+  ></footer>
+
+  <script type="text/x-handlebars-template" id="player-layout">
+    <section
+      id="player"
+      class="
+        flex-1
+        grid grid-cols-24 grid-rows-[repeat(15,minmax(0,50px))] gap-x-4
+        bg-black/10
+        relative
+      "
+    >
+      <h2
+        class="row-start-1 col-start-1 col-span-11"
+      >Inventory</h2>
+
+      {{#player.inventory}}
+      <div
+        class="
+          row-start-2 row-span-full
+          col-start-1 col-span-11
+          bg-black/20
+          overflow-auto scrollbar-thin scrollbar-grey
+          has-open:scrollbar-orange
+        "
+      >
+        <h3 class="uppercase italic text-center">Backpack</h3>
+        {{#each items1}}
+          {{> item }}
+        {{/each}}
+
+        <h3 class="uppercase italic text-center">Valuables</h3>
+        {{#each items3}}
+          {{#if (test name "^misc_")}}
+            {{> item }}
+          {{/if}}
+        {{/each}}
+
+        <h3 class="uppercase italic text-center">Weapon Upgrades</h3>
+        {{#each items3}}
+          {{#if (test name "^Craft_Upgrade_")}}
+            {{> item }}
+          {{/if}}
+        {{/each}}
+
+        <h3 class="uppercase italic text-center">Craft Parts</h3>
+        {{#each items3}}
+          {{#if (test name "^Craft_(?!Upgrade_)")}}
+            {{> item }}
+          {{/if}}
+        {{/each}}
+      </div>
+      {{/player.inventory}}
+
+      <h2
+        class="row-start-1 col-start-12 col-span-11"
+      >Storage</h2>
+
+      {{#player.storage}}
+      <div
+        class="
+          row-start-2 row-span-9
+          col-start-12 col-span-11
+          bg-black/20
+          overflow-auto scrollbar-thin scrollbar-grey
+          has-open:scrollbar-orange
+        "
+      >
+
+        {{#items1}}
+          {{> item }}
+        {{/items1}}
+      </div>
+      {{/player.storage}}
+
+      <aside
+        class="
+          row-start-1 row-span-full
+          col-start-23 col-span-2
+          flex flex-col
+          px-2
+        ">
+        {{#daytime}}
+        <digi-clock seconds="false" class="text-center"></digi-clock>
+        <ana-clock markers="twelve" secondhand="false"></ana-clock>
+        {{/daytime}}
+
+        <label
+          class="
+            mt-auto mb-16
+            flex flex-wrap
+            justify-end text-right
+          "
+        >
+          <span class="w-full uppercase italic text-yellow-600">Cash</span>
+          <span class="flex">$
+            <input
+              type="number"
+              name="cash" value="{{player.inventory.cash}}"
+              class="flex-1 field-sizing-content text-right mr-[-15px]"
+            />
+          </span>
+        </label>
+      </aside>
+    </section>
+  </script>
+
+  <script type="text/x-handlebars-template" id="item">
+    <details
+      name="item"
+      class="
+        item
+        group/details
+      "
+    >
+      <summary
+        class="
+          item__title
+
+          before:content-['⚔'] before:text-{{attributes.color}}
+          after:content-['{{upgradeSockets.length}}']
+
+          group-open/details:bg-orange
+          group-open/details:text-black
+          group-open/details:before:bg-{{attributes.color}}
+          group-open/details:before:text-white
+        "
+      >
+        <strong>{{replace (replace name "Craft_(Upgrade_)?" "") "misc_" ""}}</strong>
+      </summary>
+
+      <div
+        class="
+          grid grid-cols-3 gap-1
+          absolute inset-0 top-4
+          row-start-11 row-span-5
+          col-start-12 col-span-11
+        "
+      >
+        <h3
+          class="
+            col-span-full
+            item__title gap-1
+            bg-black/50
+
+            before:content-['⚔'] before:text-{{attributes.color}}
+            after:content-['{{upgradeSockets.length}}']
+
+            before:p-1 after:p-1
+          "
+        >
+          <strong class="uppercase">{{replace (replace name "Craft_(Upgrade_)?" "") "misc_" ""}}</strong>
+        </h3>
+
+        <label class="col-span-full item__stat">
+          <span>Damage</span>
+          <input
+            name="player[inventory][items1][0][attributes][unknown2]"
+            type="number"
+            value="{{attributes.unknown2}}"
+          />
+        </label>
+
+        <label class="col-span-full item__stat">
+          <span>Durability</span>
+          <input
+            name="player[inventory][items1][0][condition]"
+            type="number"
+            value="{{condition}}"
+          />
+        </label>
+
+        <label class="col-span-full item__stat">
+          <span>Handling</span>
+          <input
+            name="player[inventory][items1][0][condition]"
+            type="number"
+            value="{{condition}}"
+          />
+        </label>
+
+        <label class="item__stat">
+          <span>Repairs</span>
+          <input
+            name="player[inventory][items1][0][repairs]"
+            type="number"
+            value="{{repairs}}"
+          />
+        </label>
+
+        <label class="item__stat">
+          <span>Upgrades</span>
+          <input
+            name="player[inventory][items1][0][repairs]"
+            type="number"
+            value="{{upgradeSockets.length}}"
+          />
+        </label>
+
+        <label class="item__stat">
+          <span>Value</span>
+          <input
+            name="player[inventory][items1][0][value]"
+            type="number"
+            value="{{value}}"
+          />
+        </label>
+      </div>
+
+    </details>
+  </script>
+
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <script src="https://unpkg.com/htmx-ext-client-side-templates@2.0.0/client-side-templates.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+  <script>
+    Handlebars.registerPartial("item", item.innerHTML);
+
+    Handlebars.registerHelper("test", function(value, pattern) {
+      return new RegExp(pattern).test(value);
+    });
+
+    Handlebars.registerHelper("replace", function(value, pattern, replacement) {
+      return value.replace(new RegExp(pattern), replacement);
+    });
+  </script>
+
+  <script type="module" src="https://unpkg.com/web-clocks@1.0.0/dist/index.mjs"></script>
+</body>
+</html>
