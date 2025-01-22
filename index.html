@@ -49,12 +49,14 @@
     @layer components {
       menu {
         & li {
-          @apply font-bold text-5xl uppercase;
+          @apply font-bold text-3xl uppercase;
           @apply flex gap-1 items-center;
           @apply relative pb-1;
           @apply text-white;
           @apply transition-all duration-500;
           text-shadow: 1px 1px 1px #000;
+
+          @apply md:text-5xl;
 
           &:before {
             content: "";
@@ -168,10 +170,6 @@
       }
     }
 
-    @utility tilt {
-      transform: translateX(150px) translateY(150px) rotateY(20deg) rotateZ(-2deg) rotateX(-15deg);
-    }
-
     @utility scrollbar-thin {
       scrollbar-width: thin;
     }
@@ -205,6 +203,7 @@
   x-data="DyingLight"
   class="
     container items-center h-screen overflow-clip
+    grid-rows-[1fr_minmax(1fr,auto)_1fr]
     text-grey
     group/body
     has-dialog-open:blur
@@ -215,8 +214,9 @@
     <h1
       class="
         justify-self-end
-        font-bold text-7xl tracking-tighter
+        font-bold text-5xl tracking-tighter
         uppercase text-black
+        md:text-7xl
       "
     >
       <span>Dying</span>
@@ -225,8 +225,9 @@
       <em
         class="
           block
-          font-semibold text-base tracking-tight
+          font-semibold text-xs tracking-tight
           not-italic text-red
+          md:text-base
         "
       >Good Night Good Luck</em>
     </h1>
@@ -235,34 +236,37 @@
   <div
     class="
       row-start-2 col-span-full
-      self-end
+      self-end size-full
     "
   >
-    <img src="assets/484105.webp" class="w-full" />
+    <img src="assets/484105.webp" class="size-full object-cover" />
   </div>
 
   <main
     class="
-      row-start-2
-      relative perspective-midrange
+      row-start-2 self-end
+      relative
     "
   >
     <nav
       class="
-        tilt
-        inline-flex
-        before:block before:w-[30px] before:h-full
+        inline-flex gap-1
+        before:bg-black/80
+        before:bg-linear-to-b before:from-black/80 before:via-[#171717]/80 before:via-50% before:to-black/80
+        before:w-[10px]
+        md:before:w-[30px]
       "
     >
       <h2
         class="
-          font-bold text-3xl text-white
+          font-bold text-xl text-white
           bg-black/80
           bg-linear-to-b from-black/80 via-[#171717]/80 via-50% to-black/80
           [writing-mode:vertical-rl]
+          md:text-3xl
         "
       >Main Menu</h2>
-      <menu hx-ext="client-side-templates" class="ml-4">
+      <menu hx-ext="client-side-templates" class="ml-3 md:ml-4">
         <li>
           <form
             method="get" action="sample/save_coop_1.json"
