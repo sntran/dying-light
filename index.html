@@ -105,7 +105,7 @@
         & strong {
           @apply flex-1;
           @apply flex items-center;
-          @apply uppercase;
+          @apply capitalize;
         }
 
         &:after {
@@ -176,6 +176,15 @@
       scrollbar-width: thin;
     }
 
+    @utility scrollbar-none {
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      scrollbar-width: none; /* Firefox */
+
+      &::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+      }
+    }
+
     @utility scrollbar-* {
       scrollbar-color: --value(--color-*) transparent;
     }
@@ -193,6 +202,7 @@
   </style>
 </head>
 <body
+  x-data="DyingLight"
   class="
     container items-center h-screen overflow-clip
     text-grey
@@ -254,14 +264,16 @@
       >Main Menu</h2>
       <menu hx-ext="client-side-templates" class="ml-4">
         <li>
-          <button
-            hx-get="sample/save_coop_1.json"
-            hx-target="#player"
-            hx-swap="outerHTML transition:true"
-            handlebars-template="player-layout"
-            hx-on::after-request="if(event.detail.successful) modal.showModal()"
-            class="outline-none"
-          >New Game</button>
+          <form
+            method="get" action="sample/save_coop_1.json"
+            x-on:submit.prevent="request = $el"
+          >
+            <button
+              type="submit"
+              class="outline-none"
+            >New Game</button>
+          </form>
+        </li>
         </li>
       </menu>
     </nav>
@@ -269,6 +281,7 @@
 
   <dialog
     id="modal" popover=""
+    x-init="$watch('player', player => player && $el.showModal())"
     class="
       row-start-2
       self-center
@@ -282,6 +295,7 @@
       method="dialog"
       class="
         h-full flex flex-col
+        relative
         text-grey
       "
     >
@@ -326,10 +340,133 @@
 
       <textarea
         name="json"
-        id="player"
         rows="10"
-        class="flex-1 px-3 py-2 font-mono border"
+        x-model="JSON.stringify($data, null, 2)"
+        class="
+          absolute w-full h-full opacity-25 scrollbar-none
+          hidden flex-1 px-3 py-2 font-mono border
+        "
       ></textarea>
+
+      <section
+        class="
+          flex-1
+          grid grid-cols-24 grid-rows-[repeat(15,minmax(0,50px))] gap-x-4
+          bg-black/10
+          relative
+        "
+      >
+        <h2
+          class="row-start-1 col-start-1 col-span-11"
+        >Inventory</h2>
+
+        <div
+          x-data="{
+            get items1() { return player.inventory.items1; },
+            get items2() { return  player.inventory.items2; },
+            get items3() { return  player.inventory.items3; }
+          }"
+          class="
+            row-start-2 row-span-full
+            col-start-1 col-span-11
+            bg-black/20
+            overflow-auto scrollbar-thin scrollbar-grey
+            has-open:scrollbar-orange
+          "
+        >
+          <h3
+            x-show="items1.length"
+            class="uppercase italic text-center"
+          >Backpack</h3>
+
+          <template x-for="item in items1">
+            <x-item x-data="item"></x-item>
+          </template>
+
+          <h3
+            x-show="items3.some(x => x.name.startsWith('misc_'))"
+            class="uppercase italic text-center"
+          >Valuables</h3>
+
+          <template x-for="item in items3.filter(x => x.name.startsWith('misc_'))">
+            <x-item x-data="item"></x-item>
+          </template>
+
+          <h3
+            x-show="items3.some(x => x.name.startsWith('Craft_Upgrade'))"
+            class="uppercase italic text-center"
+          >Weapon Upgrades</h3>
+
+          <template x-for="item in items3.filter(x => x.name.startsWith('Craft_Upgrade'))">
+            <x-item x-data="item"></x-item>
+          </template>
+
+          <h3
+            x-show="items3.some(x => /^Craft_(?!Upgrade_)/.test(x.name))"
+            class="uppercase italic text-center"
+          >Craft Parts</h3>
+
+          <template x-for="item in items3.filter(x => /^Craft_(?!Upgrade_)/.test(x.name))">
+            <x-item x-data="item"></x-item>
+          </template>
+        </div>
+
+        <h2
+          class="row-start-1 col-start-12 col-span-11"
+        >Storage</h2>
+
+        <div
+          x-data="{
+            get items1() { return player.storage.items1; },
+            get items2() { return  player.storage.items2; },
+            get items3() { return  player.storage.items3; }
+          }"
+          class="
+            row-start-2 row-span-9
+            col-start-12 col-span-11
+            bg-black/20
+            overflow-auto scrollbar-thin scrollbar-grey
+            has-open:scrollbar-orange
+          "
+        >
+
+          <template x-for="item in items1">
+            <x-item x-data="item"></x-item>
+          </template>
+        </div>
+
+        <aside
+          class="
+            row-start-1 row-span-full
+            col-start-23 col-span-2
+            flex flex-col
+            px-2
+          "
+        >
+          <digi-clock seconds="false" class="text-center"></digi-clock>
+          <ana-clock markers="twelve" secondhand="false"></ana-clock>
+
+          <label
+            class="
+              mt-auto mb-16
+              flex flex-wrap
+              justify-end text-right
+            "
+          >
+            <span class="w-full uppercase italic text-yellow-600">Cash</span>
+            <span class="flex">$
+              <input
+                type="number" min="0" step="100"
+                required=""
+                value=""
+                class="flex-1 field-sizing-content text-right mr-[-15px]"
+                x-model.number="player.inventory.cash"
+              />
+            </span>
+          </label>
+        </aside>
+
+      </section>
 
       <div class="py-4 flex gap-4 uppercase">
         <button type="submit"><kbd class="px-2">↵</kbd> Save</button>
@@ -346,112 +483,7 @@
     "
   ></footer>
 
-  <script type="text/x-handlebars-template" id="player-layout">
-    <section
-      id="player"
-      class="
-        flex-1
-        grid grid-cols-24 grid-rows-[repeat(15,minmax(0,50px))] gap-x-4
-        bg-black/10
-        relative
-      "
-    >
-      <h2
-        class="row-start-1 col-start-1 col-span-11"
-      >Inventory</h2>
-
-      {{#player.inventory}}
-      <div
-        class="
-          row-start-2 row-span-full
-          col-start-1 col-span-11
-          bg-black/20
-          overflow-auto scrollbar-thin scrollbar-grey
-          has-open:scrollbar-orange
-        "
-      >
-        <h3 class="uppercase italic text-center">Backpack</h3>
-        {{#each items1}}
-          {{> item }}
-        {{/each}}
-
-        <h3 class="uppercase italic text-center">Valuables</h3>
-        {{#each items3}}
-          {{#if (test name "^misc_")}}
-            {{> item }}
-          {{/if}}
-        {{/each}}
-
-        <h3 class="uppercase italic text-center">Weapon Upgrades</h3>
-        {{#each items3}}
-          {{#if (test name "^Craft_Upgrade_")}}
-            {{> item }}
-          {{/if}}
-        {{/each}}
-
-        <h3 class="uppercase italic text-center">Craft Parts</h3>
-        {{#each items3}}
-          {{#if (test name "^Craft_(?!Upgrade_)")}}
-            {{> item }}
-          {{/if}}
-        {{/each}}
-      </div>
-      {{/player.inventory}}
-
-      <h2
-        class="row-start-1 col-start-12 col-span-11"
-      >Storage</h2>
-
-      {{#player.storage}}
-      <div
-        class="
-          row-start-2 row-span-9
-          col-start-12 col-span-11
-          bg-black/20
-          overflow-auto scrollbar-thin scrollbar-grey
-          has-open:scrollbar-orange
-        "
-      >
-
-        {{#items1}}
-          {{> item }}
-        {{/items1}}
-      </div>
-      {{/player.storage}}
-
-      <aside
-        class="
-          row-start-1 row-span-full
-          col-start-23 col-span-2
-          flex flex-col
-          px-2
-        ">
-        {{#daytime}}
-        <digi-clock seconds="false" class="text-center"></digi-clock>
-        <ana-clock markers="twelve" secondhand="false"></ana-clock>
-        {{/daytime}}
-
-        <label
-          class="
-            mt-auto mb-16
-            flex flex-wrap
-            justify-end text-right
-          "
-        >
-          <span class="w-full uppercase italic text-yellow-600">Cash</span>
-          <span class="flex">$
-            <input
-              type="number"
-              name="cash" value="{{player.inventory.cash}}"
-              class="flex-1 field-sizing-content text-right mr-[-15px]"
-            />
-          </span>
-        </label>
-      </aside>
-    </section>
-  </script>
-
-  <script type="text/x-handlebars-template" id="item">
+  <template x-component="item">
     <details
       name="item"
       class="
@@ -463,16 +495,17 @@
         class="
           item__title
 
-          before:content-['⚔'] before:text-{{attributes.color}}
-          after:content-['{{upgradeSockets.length}}']
+          before:content-['⚔']
 
           group-open/details:bg-orange
           group-open/details:text-black
-          group-open/details:before:bg-{{attributes.color}}
           group-open/details:before:text-white
         "
+        x-bind:class="`before:text-${attributes.color} after:content-['${upgradeSockets.length}'] group-open/details:before:bg-${attributes.color}`"
       >
-        <strong>{{replace (replace name "Craft_(Upgrade_)?" "") "misc_" ""}}</strong>
+        <strong
+          x-text="normalize(name)"
+        >Name</strong>
       </summary>
 
       <div
@@ -489,86 +522,161 @@
             item__title gap-1
             bg-black/50
 
-            before:content-['⚔'] before:text-{{attributes.color}}
-            after:content-['{{upgradeSockets.length}}']
+            before:content-['⚔']
 
             before:p-1 after:p-1
           "
+          x-bind:class="`before:text-${attributes.color} after:content-['${upgradeSockets.length}']`"
         >
-          <strong class="uppercase">{{replace (replace name "Craft_(Upgrade_)?" "") "misc_" ""}}</strong>
+          <strong
+            class="uppercase"
+            x-text="normalize(name)"
+          >Name</strong>
         </h3>
 
         <label class="col-span-full item__stat">
           <span>Damage</span>
           <input
-            name="player[inventory][items1][0][attributes][unknown2]"
             type="number"
-            value="{{attributes.unknown2}}"
+            required=""
+            value=""
+            x-model.number="attributes.unknown2"
           />
         </label>
 
         <label class="col-span-full item__stat">
           <span>Durability</span>
           <input
-            name="player[inventory][items1][0][condition]"
             type="number"
-            value="{{condition}}"
+            required=""
+            value=""
+            x-model.number="condition"
           />
         </label>
 
         <label class="col-span-full item__stat">
           <span>Handling</span>
           <input
-            name="player[inventory][items1][0][condition]"
             type="number"
-            value="{{condition}}"
+            value=""
           />
         </label>
 
         <label class="item__stat">
           <span>Repairs</span>
           <input
-            name="player[inventory][items1][0][repairs]"
             type="number"
-            value="{{repairs}}"
+            required=""
+            value=""
+            x-model.number="repairs"
           />
         </label>
 
         <label class="item__stat">
           <span>Upgrades</span>
           <input
-            name="player[inventory][items1][0][repairs]"
             type="number"
-            value="{{upgradeSockets.length}}"
+            value=""
+            disabled="disabled"
+            x-model="upgradeSockets.length"
           />
         </label>
 
         <label class="item__stat">
           <span>Value</span>
           <input
-            name="player[inventory][items1][0][value]"
             type="number"
-            value="{{value}}"
+            value="0"
           />
         </label>
       </div>
 
     </details>
-  </script>
+  </template>
 
-  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-  <script src="https://unpkg.com/htmx-ext-client-side-templates@2.0.0/client-side-templates.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script src="//unpkg.com/alpinejs" defer=""></script>
 
   <script>
-    Handlebars.registerPartial("item", item.innerHTML);
+    function DyingLight() {
+      return {
+        "daytime": {
+          "daysElapsed": 1,
+          "timeOfDay": 0
+        },
+        "player": {
+          "buffs": [],
+          "fury": 0.0,
+          "health": 100.0,
+          "inventory": {
+            "ammo": {
+              "items": []
+            },
+            "cash": 0,
+            "equipmentSlots": [],
+            "items1": [],
+            "items2": [],
+            "items3": [],
+            "quickSlots": []
+          },
+          "skills": [],
+          "storage": {
+            "ammo": {
+              "items": []
+            },
+            "cash": 0,
+            "items1": [],
+            "items2": [],
+            "items3": []
+          },
+          "timedBuffs": []
+        },
+        set request(request) {
+          if (request instanceof HTMLFormElement) {
+            request = new Request(request.action, {
+              method: request.method,
+            });
+          }
 
-    Handlebars.registerHelper("test", function(value, pattern) {
-      return new RegExp(pattern).test(value);
-    });
+          return fetch(request)
+            .then(res => res.json())
+            .then(data => this.player = data.player);
+        },
+        // Helper to make item's name readable.
+        normalize(name) {
+          return name
+            .replace(/Craft_(Upgrade_)?/, "")
+            .replace("misc_", "")
+            .replace(/^[zZ]+_/, "")
+            .replace(/(Melee|Throwable)_/, "")
+            // Snake_Case to Snake Case
+            .replace(/_([A-Z])/g, " $1")
+            // To Title Case
+            .replace(/([A-Z])/g, (match) => ` ${match}`)
+            .replace(/^./, (match) => match.toUpperCase())
+            .trim();
+        }
+      }
+    }
 
-    Handlebars.registerHelper("replace", function(value, pattern, replacement) {
-      return value.replace(new RegExp(pattern), replacement);
+    // Generates a custom element for each `template[x-component]` for
+    // encapsulation. The resulting element can be used as template.
+    document.querySelectorAll("[x-component]").forEach((component) => {
+      const componentName = component.getAttribute("x-component");
+      class Component extends HTMLElement {
+        connectedCallback() {
+          this.append(component.content.cloneNode(true));
+        }
+
+        data() {
+          const attributes = this.getAttributeNames();
+          const data = {};
+          attributes.forEach(attribute => {
+            data[attribute] = this.getAttribute(attribute);
+          });
+          return data;
+        }
+      }
+      customElements.define(`x-${componentName}`, Component);
     });
   </script>
 
