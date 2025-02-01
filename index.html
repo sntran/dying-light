@@ -7,17 +7,22 @@
 
   <link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700,800" rel="stylesheet" type="text/css">
 
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.0.0-beta.9/+esm"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.0.0/+esm"></script>
   <style type="text/tailwindcss">
     @theme {
       --font-mono: "FontWithASyntaxHighlighter", monospace;
       --font-sans: "Dosis", ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
       'Segoe UI Symbol', 'Noto Color Emoji';
+
+      --color-*: initial;
+      --color-white: white;
+      --color-black: black;
       --color-grey: #949494;
       --color-orange: #e0931f;
       --color-red: #bd531d;
       --color-blue: #05a3fb;
       --color-green: #1fef9e;
+      --color-violet: purple;
       --color-platinum: gold;
 
       --container-width: 1440px;
@@ -33,7 +38,7 @@
       }
 
       h2 {
-        @apply px-4 py-2 font-bold text-xl uppercase text-yellow-600;
+        @apply px-4 py-2 font-bold text-xl uppercase text-orange;
       }
 
       button {
@@ -94,27 +99,20 @@
 
       }
 
-      .item__title {
-        @apply flex gap-2 select-none;
+      .item__icon {
+        @apply p-2 box-content size-[1em];
+        @apply font-[u1f800] leading-none text-2xl text-center;
+      }
 
-        &:before {
-          content: "";
-          @apply p-2 box-content size-[1em];
-          @apply font-mono leading-none text-2xl text-center;
-          @apply text-white;
-        }
+      .item__name {
+        @apply flex-1;
+        @apply flex items-center;
+        @apply capitalize;
+      }
 
-        & strong {
-          @apply flex-1;
-          @apply flex items-center;
-          @apply capitalize;
-        }
-
-        &:after {
-          content: "";
-          @apply p-2 box-content size-[1em];
-          @apply leading-none text-2xl text-center;
-        }
+      .item__upgrades {
+        @apply p-2 box-content size-[1em];
+        @apply leading-none text-2xl text-center;
       }
 
       .item__stat {
@@ -134,11 +132,7 @@
         }
 
         & input {
-          @apply max-w-[5ch] text-right;
-
-          .col-span-full & {
-            @apply max-w-none;
-          }
+          @apply text-right;
         }
       }
     }
@@ -168,6 +162,10 @@
       :where(& > .col-span-full) {
         grid-column: full-start / full-end;
       }
+    }
+
+    @utility clip-half {
+      clip-path: polygon(0% 0%, 100% 0, 100% 100%);
     }
 
     @utility scrollbar-thin {
@@ -203,14 +201,13 @@
   x-data="DyingLight"
   class="
     container items-center h-screen overflow-clip
-    grid-rows-[1fr_minmax(1fr,auto)_1fr]
+    grid-rows-[minmax(20vh,auto)_1fr_minmax(20vh,auto)]
     text-grey
-    group/body
     has-dialog-open:blur
   "
 >
 
-  <header class="row-start-1 col-span-full container">
+  <header class="row-start-1 col-span-full self-start container">
     <h1
       class="
         justify-self-end
@@ -239,7 +236,13 @@
       self-end size-full
     "
   >
-    <img src="assets/484105.webp" class="size-full object-cover" />
+    <img
+      src="assets/484105.webp"
+      class="
+        absolute inset-0
+        size-full object-cover
+      "
+    />
   </div>
 
   <main
@@ -317,7 +320,7 @@
               class="
                 p-4 uppercase
                 border-y-4 border-transparent
-                aria-selected:text-yellow-600
+                aria-selected:text-orange
                 aria-selected:border-current
               "
             >Storage</button>
@@ -331,7 +334,7 @@
               class="
                 p-4 uppercase
                 border-y-4 border-transparent
-                aria-selected:text-yellow-600
+                aria-selected:text-orange
                 aria-selected:border-current
               "
             >Shop</button>
@@ -347,8 +350,9 @@
         rows="10"
         x-model="JSON.stringify($data, null, 2)"
         class="
-          absolute w-full h-full opacity-25 scrollbar-none
-          hidden flex-1 px-3 py-2 font-mono border
+          absolute w-full h-full scrollbar-none
+          flex-1 px-3 py-2 font-mono border
+          opacity-0
         "
       ></textarea>
 
@@ -366,6 +370,7 @@
 
         <div
           x-data="{
+            get equipmentSlots() { return player.inventory.equipmentSlots; },
             get items1() { return player.inventory.items1; },
             get items2() { return  player.inventory.items2; },
             get items3() { return  player.inventory.items3; }
@@ -383,34 +388,34 @@
             class="uppercase italic text-center"
           >Backpack</h3>
 
-          <template x-for="item in items1">
-            <x-item x-data="item"></x-item>
+          <template x-for="item in items1.concat(equipmentSlots)">
+            <x-item x-data="item" :equipped="equipmentSlots.includes(item)"></x-item>
           </template>
 
           <h3
-            x-show="items3.some(x => x.name.startsWith('misc_'))"
+            x-show="items3.some((x) => isValuable(x.name))"
             class="uppercase italic text-center"
           >Valuables</h3>
 
-          <template x-for="item in items3.filter(x => x.name.startsWith('misc_'))">
+          <template x-for="item in items3.filter((x) => isValuable(x.name))">
             <x-item x-data="item"></x-item>
           </template>
 
           <h3
-            x-show="items3.some(x => x.name.startsWith('Craft_Upgrade'))"
+            x-show="items3.some((x) => isUpgrade(x.name))"
             class="uppercase italic text-center"
           >Weapon Upgrades</h3>
 
-          <template x-for="item in items3.filter(x => x.name.startsWith('Craft_Upgrade'))">
+          <template x-for="item in items3.filter((x) => isUpgrade(x.name))">
             <x-item x-data="item"></x-item>
           </template>
 
           <h3
-            x-show="items3.some(x => /^Craft_(?!Upgrade_)/.test(x.name))"
+            x-show="items3.some((x) => isCraftPart(x.name))"
             class="uppercase italic text-center"
           >Craft Parts</h3>
 
-          <template x-for="item in items3.filter(x => /^Craft_(?!Upgrade_)/.test(x.name))">
+          <template x-for="item in items3.filter((x) => isCraftPart(x.name))">
             <x-item x-data="item"></x-item>
           </template>
         </div>
@@ -437,6 +442,10 @@
           <template x-for="item in items1">
             <x-item x-data="item"></x-item>
           </template>
+
+          <template x-if="!items1.length">
+            <span class="block px-6 py-2">[Empty]</span>
+          </template>
         </div>
 
         <aside
@@ -457,7 +466,7 @@
               justify-end text-right
             "
           >
-            <span class="w-full uppercase italic text-yellow-600">Cash</span>
+            <span class="w-full uppercase italic text-orange">Cash</span>
             <span class="flex">$
               <input
                 type="number" min="0" step="100"
@@ -492,63 +501,89 @@
       name="item"
       class="
         item
-        group/details
       "
     >
       <summary
         class="
-          item__title
+          flex gap-2 select-none
 
-          before:content-['⚔']
-
-          group-open/details:bg-orange
-          group-open/details:text-black
-          group-open/details:before:text-white
+          in-details-open:bg-orange
         "
-        x-bind:class="`before:text-${attributes.color} after:content-['${upgradeSockets.length}'] group-open/details:before:bg-${attributes.color}`"
       >
+        <span
+          class="
+            item__icon
+            in-details-open:text-white
+            in-details-open:[&.text-white]:bg-grey
+
+            relative
+
+            after:absolute after:top-0 after:right-0
+            after:size-2 after:bg-grey
+            after:clip-half
+            not-in-[[equipped]]:after:hidden
+          "
+          x-text="icon(name)"
+          x-bind:class="`text-${attributes.color} in-details-open:bg-${attributes.color}`"
+        ></span>
+
         <strong
+          class="item__name"
           x-text="normalize(name)"
         >Name</strong>
+
+        <span
+          class="item__upgrades p-1"
+          x-text="upgradeSockets.filter(x => x !== 'None').length || ''"
+        ></span>
       </summary>
 
       <div
         class="
-          grid grid-cols-3 gap-1
-          absolute inset-0 top-4
+          absolute top-4 left-0 right-0
           row-start-11 row-span-5
           col-start-12 col-span-11
+          flex flex-wrap gap-1
         "
       >
         <h3
           class="
-            col-span-full
-            item__title gap-1
+            w-full
+            flex gap-1 select-none
             bg-black/50
-
-            before:content-['⚔']
-
-            before:p-1 after:p-1
           "
-          x-bind:class="`before:text-${attributes.color} after:content-['${upgradeSockets.length}']`"
         >
+          <span
+            class="item__icon p-1"
+            x-text="icon(name)"
+            x-bind:class="`text-${attributes.color}`"
+          ></span>
           <strong
-            class="uppercase"
+            class="item__name uppercase text-white"
             x-text="normalize(name)"
           >Name</strong>
+          <span
+            class="item__upgrades p-1"
+            x-text="upgradeSockets.filter(x => x !== 'None').length || ''"
+          ></span>
         </h3>
 
-        <label class="col-span-full item__stat">
+        <label
+          x-show="isWeapon(name)"
+          class="item__stat w-full"
+        >
           <span>Damage</span>
           <input
-            type="number"
-            required=""
-            value=""
-            x-model.number="attributes.unknown2"
+            type="text"
+            disabled="disabled"
+            value="???"
           />
         </label>
 
-        <label class="col-span-full item__stat">
+        <label
+          x-show="isMelee(name)"
+          class="item__stat w-full"
+        >
           <span>Durability</span>
           <input
             type="number"
@@ -558,39 +593,52 @@
           />
         </label>
 
-        <label class="col-span-full item__stat">
+        <label
+          x-show="isMelee(name)"
+          class="item__stat w-full"
+        >
           <span>Handling</span>
           <input
-            type="number"
-            value=""
+            type="text"
+            disabled="disabled"
+            value="???"
           />
         </label>
 
-        <label class="item__stat">
+        <label
+          x-show="isMelee(name)"
+          class="item__stat flex-1"
+        >
           <span>Repairs</span>
           <input
             type="number"
             required=""
-            value=""
+            value="" min="0"
             x-model.number="repairs"
+            class="max-w-[5ch]"
           />
         </label>
 
-        <label class="item__stat">
+        <label
+          x-show="upgradeSockets.length"
+          class="item__stat flex-1"
+        >
           <span>Upgrades</span>
-          <input
-            type="number"
-            value=""
-            disabled="disabled"
-            x-model="upgradeSockets.length"
-          />
+          <span
+            x-text="upgradeSockets.filter(x => x !== 'None').length + '/' + upgradeSockets.length"
+            class="max-w-[5ch]"
+          ></span>
         </label>
 
-        <label class="item__stat">
+        <label
+          class="item__stat flex-1"
+        >
           <span>Value</span>
           <input
             type="number"
             value="0"
+            disabled="disabled"
+            class="max-w-[5ch]"
           />
         </label>
       </div>
@@ -602,6 +650,23 @@
 
   <script>
     function DyingLight() {
+      const isMelee = (name) => name.includes("Melee_");
+      const isThrowable = (name) => name.includes("Throwable_");
+      const isFirearm = (name) => name.includes("Firearm_");
+      const isWeapon = (name) => isMelee(name) || isThrowable(name) || isFirearm(name);
+      const isValuable = (name) => name.startsWith('misc_');
+      const isUpgrade = (name) => name.startsWith('Craft_Upgrade');
+      const isCraftPart = (name) => /^Craft_(?!Upgrade_)/.test(name);
+
+      const icon = (name) => {
+        if (isMelee(name)) return "⚒";
+        if (isFirearm(name)) return "🥆";
+        if (isThrowable(name)) return "🧨";
+        if (isValuable(name)) return "﹩";
+        if (isCraftPart(name)) return "⛏";
+        return "⚙";
+      }
+
       return {
         "daytime": {
           "daysElapsed": 1,
@@ -645,6 +710,13 @@
             .then(res => res.json())
             .then(data => this.player = data.player);
         },
+        isWeapon,
+        isMelee,
+        isThrowable,
+        isValuable,
+        isUpgrade,
+        isCraftPart,
+        icon,
         // Helper to make item's name readable.
         normalize(name) {
           return name
