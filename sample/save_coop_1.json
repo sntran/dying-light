@@ -9,7 +9,38 @@
         "health": 100.0,
         "inventory": {
             "ammo": {
-                "items": []
+                "items": [
+                    {
+                        "id": 1335,
+                        "name": "ZZZZ_Bullet_Arrow",
+                        "value": 2
+                    },
+                    {
+                        "id": 43,
+                        "name": "Bullet_Pistol",
+                        "value": 1
+                    },
+                    {
+                        "id": 2927,
+                        "name": "Bullet_Pistol_Subsonic",
+                        "value": 1
+                    },
+                    {
+                        "id": 44,
+                        "name": "Bullet_Rifle",
+                        "value": 1
+                    },
+                    {
+                        "id": 45,
+                        "name": "Bullet_Shotgun",
+                        "value": 1
+                    },
+                    {
+                        "id": 1348,
+                        "name": "Bullet_SMG",
+                        "value": 1
+                    }
+                ]
             },
             "cash": 0,
             "equipmentSlots": [
@@ -720,7 +751,7 @@
                     "craftPlan": "None",
                     "id": 463,
                     "name": "Medkit_HealthPackLarge",
-                    "quantity": 1,
+                    "quantity": 2,
                     "repairs": 0,
                     "unknown": {
                         "unknown002": 0,

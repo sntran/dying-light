@@ -370,10 +370,11 @@
 
         <div
           x-data="{
-            get equipmentSlots() { return player.inventory.equipmentSlots; },
-            get items1() { return player.inventory.items1; },
-            get items2() { return  player.inventory.items2; },
-            get items3() { return  player.inventory.items3; }
+            get ammo() { return player.inventory.ammo.items },
+            get equipmentSlots() { return player.inventory.equipmentSlots },
+            get items1() { return player.inventory.items1 },
+            get items2() { return  player.inventory.items2 },
+            get items3() { return  player.inventory.items3 }
           }"
           class="
             row-start-2 row-span-full
@@ -416,6 +417,24 @@
           >Craft Parts</h3>
 
           <template x-for="item in items3.filter((x) => isCraftPart(x.name))">
+            <x-item x-data="item"></x-item>
+          </template>
+
+          <h3
+            x-show="ammo.length"
+            class="uppercase italic text-center"
+          >Ammo</h3>
+
+          <template x-for="item in ammo">
+            <x-item x-data="item"></x-item>
+          </template>
+
+          <h3
+            x-show="items3.some((x) => isOther(x.name))"
+            class="uppercase italic text-center"
+          >Others</h3>
+
+          <template x-for="item in items3.filter((x) => isOther(x.name))">
             <x-item x-data="item"></x-item>
           </template>
         </div>
@@ -498,6 +517,11 @@
 
   <template x-component="item">
     <details
+      x-data="{
+        get color() { return this.attributes?.color || 'white'},
+        get amount() { return this.quantity || this.value },
+        get upgrades() { return this.upgradeSockets || []},
+      }"
       name="item"
       class="
         item
@@ -524,17 +548,17 @@
             not-in-[[equipped]]:after:hidden
           "
           x-text="icon(name)"
-          x-bind:class="`text-${attributes.color} in-details-open:bg-${attributes.color}`"
+          x-bind:class="`text-${color} in-details-open:bg-${color}`"
         ></span>
 
         <strong
-          class="item__name"
-          x-text="normalize(name)"
+          class="item__name in-details-open:text-black"
+          x-text="(amount > 1 ? amount + 'x ' : '') + normalize($data)"
         >Name</strong>
 
         <span
           class="item__upgrades p-1"
-          x-text="upgradeSockets.filter(x => x !== 'None').length || ''"
+          x-text="upgrades.filter(x => x !== 'None').length || ''"
         ></span>
       </summary>
 
@@ -556,83 +580,73 @@
           <span
             class="item__icon p-1"
             x-text="icon(name)"
-            x-bind:class="`text-${attributes.color}`"
+            x-bind:class="`text-${color}`"
           ></span>
           <strong
             class="item__name uppercase text-white"
-            x-text="normalize(name)"
+            x-text="normalize($data)"
           >Name</strong>
           <span
             class="item__upgrades p-1"
-            x-text="upgradeSockets.filter(x => x !== 'None').length || ''"
+            x-text="upgrades.filter(x => x !== 'None').length || ''"
           ></span>
         </h3>
 
-        <label
-          x-show="isWeapon(name)"
-          class="item__stat w-full"
-        >
-          <span>Damage</span>
-          <input
-            type="text"
-            disabled="disabled"
-            value="???"
-          />
-        </label>
+        <template x-if="isWeapon(name)">
+          <label class="item__stat w-full">
+            <span>Damage</span>
+            <input
+              type="text"
+              disabled="disabled"
+              value="???"
+            />
+          </label>
+        </template>
 
-        <label
-          x-show="isMelee(name)"
-          class="item__stat w-full"
-        >
-          <span>Durability</span>
-          <input
-            type="number"
-            required=""
-            value=""
-            x-model.number="condition"
-          />
-        </label>
+        <template x-if="isMelee(name)">
+          <label class="item__stat w-full">
+            <span>Durability</span>
+            <input
+              type="number"
+              value=""
+              step=".01"
+              x-bind:disabled="!isMelee(name)"
+              x-model.number="condition"
+            />
+          </label>
 
-        <label
-          x-show="isMelee(name)"
-          class="item__stat w-full"
-        >
-          <span>Handling</span>
-          <input
-            type="text"
-            disabled="disabled"
-            value="???"
-          />
-        </label>
+          <label class="item__stat w-full">
+            <span>Handling</span>
+            <input
+              type="text"
+              disabled="disabled"
+              value="???"
+            />
+          </label>
 
-        <label
-          x-show="isMelee(name)"
-          class="item__stat flex-1"
-        >
-          <span>Repairs</span>
-          <input
-            type="number"
-            required=""
-            value="" min="0"
-            x-model.number="repairs"
-            class="max-w-[5ch]"
-          />
-        </label>
+          <label class="item__stat flex-1">
+            <span>Repairs</span>
+            <input
+              type="number"
+              value="" min="0"
+              x-bind:disabled="!isMelee(name)"
+              x-model.number="repairs"
+              class="max-w-[5ch]"
+            />
+          </label>
+        </template>
 
-        <label
-          x-show="upgradeSockets.length"
-          class="item__stat flex-1"
-        >
-          <span>Upgrades</span>
-          <span
-            x-text="upgradeSockets.filter(x => x !== 'None').length + '/' + upgradeSockets.length"
-            class="max-w-[5ch]"
-          ></span>
-        </label>
+        <template x-if="upgrades.length">
+          <label class="item__stat flex-1">
+            <span>Upgrades</span>
+            <span
+              x-text="upgrades.filter(x => x !== 'None').length + '/' + upgrades.length"
+              class="max-w-[5ch]"
+            ></span>
+          </label>
+        </template>
 
-        <label
-          class="item__stat flex-1"
-        >
+        <label class="item__stat flex-1">
           <span>Value</span>
           <input
             type="number"
@@ -650,6 +664,11 @@
 
   <script>
     function DyingLight() {
+      const validitemids = {};
+      fetch("assets/validitemids.json")
+      .then((r) => r.json())
+      .then((ids) => Object.assign(validitemids, ids));
+
       const isMelee = (name) => name.includes("Melee_");
       const isThrowable = (name) => name.includes("Throwable_");
       const isFirearm = (name) => name.includes("Firearm_");
@@ -657,6 +676,11 @@
       const isValuable = (name) => name.startsWith('misc_');
       const isUpgrade = (name) => name.startsWith('Craft_Upgrade');
       const isCraftPart = (name) => /^Craft_(?!Upgrade_)/.test(name);
+      const isAmmo = (name) => name.includes("Bullet_");
+      const isOther = (name) => {
+        if (name === "LockpickItem") return true;
+        if (name.includes("Medkit_")) return true;
+      };
 
       const icon = (name) => {
         if (isMelee(name)) return "⚒";
@@ -664,6 +688,7 @@
         if (isThrowable(name)) return "🧨";
         if (isValuable(name)) return "﹩";
         if (isCraftPart(name)) return "⛏";
+        if (isAmmo(name)) return "⁌";
         return "⚙";
       }
 
@@ -716,9 +741,15 @@
         isValuable,
         isUpgrade,
         isCraftPart,
+        isAmmo,
+        isOther,
         icon,
         // Helper to make item's name readable.
-        normalize(name) {
+        normalize({ id, name }) {
+          if (!name) {
+            name = validitemids[`${id}`];
+          }
+
           return name
             .replace(/Craft_(Upgrade_)?/, "")
             .replace("misc_", "")
@@ -730,7 +761,7 @@
             .replace(/([A-Z])/g, (match) => ` ${match}`)
             .replace(/^./, (match) => match.toUpperCase())
             .trim();
-        }
+        },
       }
     }
 
